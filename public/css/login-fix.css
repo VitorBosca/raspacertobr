@@ -1,0 +1,141 @@
+/* Fix para problemas de sobreposição na tela de login */
+
+/* Reset de estilos que podem estar causando conflitos */
+.fi-simple-layout .fi-field-wrapper,
+.fi-simple-layout .fi-input-wrapper {
+    position: relative !important;
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    background: none !important;
+    box-shadow: none !important;
+}
+
+.fi-simple-layout .fi-field-wrapper {
+    margin-bottom: 1rem !important;
+}
+
+/* Garantir que inputs não tenham sobreposição */
+.fi-simple-layout .fi-input {
+    position: relative !important;
+    z-index: 1 !important;
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0.75rem 1rem !important;
+    font-size: 0.9rem !important;
+    line-height: 1.5 !important;
+    color: #374151 !important;
+    background-image: none !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 0.5rem !important;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    box-sizing: border-box !important;
+}
+
+.fi-simple-layout .fi-input:focus {
+    outline: 2px solid transparent !important;
+    outline-offset: 2px !important;
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+}
+
+/* Remove qualquer pseudo-elemento que possa estar causando problemas */
+.fi-simple-layout .fi-input::before,
+.fi-simple-layout .fi-input::after,
+.fi-simple-layout .fi-input-wrapper::before,
+.fi-simple-layout .fi-input-wrapper::after {
+    display: none !important;
+    content: none !important;
+}
+
+/* Garantir que labels não interfiram */
+.fi-simple-layout .fi-field-wrapper-label {
+    display: block !important;
+    margin-bottom: 0.5rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    color: #374151 !important;
+}
+
+/* Garantir que botões tenham tamanho correto */
+.fi-simple-layout .fi-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0.75rem 1.5rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+    line-height: 1.25 !important;
+    border-radius: 0.5rem !important;
+    transition: all 0.15s ease-in-out !important;
+    cursor: pointer !important;
+    border: 1px solid transparent !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+    box-sizing: border-box !important;
+}
+
+.fi-simple-layout .fi-btn-primary {
+    color: #ffffff !important;
+    background-color: #667eea !important;
+    border-color: #667eea !important;
+}
+
+.fi-simple-layout .fi-btn-primary:hover {
+    background-color: #5a6fd8 !important;
+    border-color: #5a6fd8 !important;
+}
+
+/* Garantir espaçamento correto entre elementos */
+.fi-simple-layout .fi-simple-card > * + * {
+    margin-top: 1rem !important;
+}
+
+/* Reset para checkbox */
+.fi-simple-layout input[type="checkbox"] {
+    width: 1rem !important;
+    height: 1rem !important;
+    margin: 0 !important;
+    margin-right: 0.5rem !important;
+    vertical-align: middle !important;
+}
+
+/* Fix para mobile */
+@media (max-width: 640px) {
+    .fi-simple-layout .fi-simple-card {
+        margin: 1rem !important;
+        padding: 1.5rem !important;
+        max-width: none !important;
+        width: calc(100% - 2rem) !important;
+    }
+    
+    .fi-simple-layout .fi-input {
+        font-size: 16px !important; /* Evita zoom no iOS */
+    }
+}
+
+/* Garantir que animações não quebrem o layout */
+.fi-simple-layout * {
+    transform: none !important;
+    scale: none !important;
+}
+
+.fi-simple-layout .fi-input:focus {
+    transform: none !important;
+    scale: none !important;
+}
+
+.fi-simple-layout .fi-btn:hover {
+    transform: translateY(-1px) !important;
+}
+
+.fi-simple-layout .fi-btn:active {
+    transform: translateY(0) !important;
+}

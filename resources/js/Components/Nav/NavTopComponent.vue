@@ -1,0 +1,1010 @@
+<template>
+    <nav class="navtop-header fixed left-0 right-0 top-0 h-[65px] z-50">
+        <div class="max-w-7xl mx-auto px-[16px] nav-menu">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center justify-start py-3 gap-5">
+                    <a v-if="setting" @click="router.push('/home')" class="flex ml-2">
+                        <div class="block">
+                            <img :src="`/storage/` + setting.software_logo_black" alt=""
+                                class="h-10 mr-3 block dark:hidden " />
+                            <img :src="`/storage/` + setting.software_logo_white" alt=""
+                                class="h-10 mr-3 hidden dark:block" />
+                        </div>
+                    </a>
+
+                    <div class="hidden md:block">
+                        <ul class="flex items-center gap-6 text-white text-sm">
+                            <li>
+                                <a @click="router.push('/home')" aria-current="page" class="flex items-center gap-[8px] text-[15px]">
+                                    <svg width="1em" height="1em" viewBox="0 0 512 512" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="size-4"><path d="M416 174.74V48h-80v58.45L256 32 0 272h64v208h144V320h96v160h144V272h64z"></path></svg>
+                                    Inicio 
+                                </a>
+                            </li>
+                            <li>
+                                <a @click="router.push('/raspadinhas')" class="flex items-center gap-[8px] text-[15px]"> 
+                                    <svg fill="currentColor" viewBox="0 0 256 256" width="1em" height="1em" xmlns="http://www.w3.org/2000/svg" class="size-4"><path d="M198.51 56.09C186.44 35.4 169.92 24 152 24h-48c-17.92 0-34.44 11.4-46.51 32.09C46.21 75.42 40 101 40 128s6.21 52.58 17.49 71.91C69.56 220.6 86.08 232 104 232h48c17.92 0 34.44-11.4 46.51-32.09C209.79 180.58 216 155 216 128s-6.21-52.58-17.49-71.91Zm1.28 63.91h-32a152.8 152.8 0 0 0-9.68-48h30.59c6.12 13.38 10.16 30 11.09 48Zm-20.6-64h-28.73a83 83 0 0 0-12-16H152c10 0 19.4 6 27.19 16ZM152 216h-13.51a83 83 0 0 0 12-16h28.73C171.4 210 162 216 152 216Zm36.7-32h-30.58a152.8 152.8 0 0 0 9.68-48h32c-.94 18-4.98 34.62-11.1 48Z"></path></svg>
+                                    Raspadinhas 
+                                </a>
+                            </li>
+                            <li>
+                                <a @click="router.push('/indique')" class="flex items-center gap-[8px] text-[15px]">
+                                    <svg viewBox="0 0 512 512" fill="currentColor" width="1em" height="1em" xmlns="http://www.w3.org/2000/svg" class="size-4"><path d="m190.5 68.8 34.8 59.2H152c-22.1 0-40-17.9-40-40s17.9-40 40-40h2.2c14.9 0 28.8 7.9 36.3 20.8zM64 88c0 14.4 3.5 28 9.6 40H32c-17.7 0-32 14.3-32 32v64c0 17.7 14.3 32 32 32h448c17.7 0 32-14.3 32-32v-64c0-17.7-14.3-32-32-32h-41.6c6.1-12 9.6-25.6 9.6-40 0-48.6-39.4-88-88-88h-2.2c-31.9 0-61.5 16.9-77.7 44.4L256 85.5l-24.1-41C215.7 16.9 186.1 0 154.2 0H152c-48.6 0-88 39.4-88 88zm336 0c0 22.1-17.9 40-40 40h-73.3l34.8-59.2c7.6-12.9 21.4-20.8 36.3-20.8h2.2c22.1 0 40 17.9 40 40zM32 288v176c0 26.5 21.5 48 48 48h144V288zm256 224h144c26.5 0 48-21.5 48-48V288H288z"></path></svg> 
+                                    Indique e Ganhe 
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+
+                <div v-if="!simple" class="flex items-center py-[8px] h-[100%]">
+
+                    <div v-if="!isAuthenticated" class="flex items-center gap-3">
+                        <button @click.prevent="loginToggle"
+                            class="button-dark rounded-lg text-white text-sm px-4 py-2 transition duration-300">
+                            Entrar
+                        </button>
+                        <button @click.prevent="registerToggle"
+                            class="rounded-lg text-[#171717] font-medium text-sm px-4 py-2 flex items-center gap-[4px] button-primary transition duration-300">
+                            <i class="fa-solid fa-user-plus text-[#171717]"></i> Registrar
+                        </button>
+                    </div>
+
+
+                    <div v-if="isAuthenticated" class="flex items-center">
+                        <WalletBalance />
+                        <MakeDeposit :showMobile="false" :title="$t('Deposit')" />
+                        <MakeWithdraw ref="makeWithdrawRef" :showMobile="false" :title="$t('Withdraw')" />
+
+                        <div class="flex items-center ml-3">
+                            <div>
+                                <button type="button"
+                                    class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                                    aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                                    <span class="sr-only">Open user menu</span>
+                                    <img class="w-8 h-8 rounded-full"
+                                        :src="userData?.avatar ? '/storage/' + userData.avatar : `/assets/images/profile.jpg`"
+                                        alt="">
+                                </button>
+                            </div>
+                            <div id="dropdown-user"
+                                class="relative focus:outline-none overflow-y-auto scroll-py-1 divide-y divide-gray-200 dark:divide-gray-700 ring-1 ring-gray-200 dark:ring-gray-700 rounded-md shadow-lg bg-white dark:bg-gray-800 hidden">
+                                <div class="p-1" role="none">
+                                    <button href=""
+                                        class="group flex items-center gap-1.5 w-full px-1.5 py-1.5 text-sm rounded-md text-gray-700 dark:text-gray-200 truncate max-w-[120px]">
+                                        <span
+                                            class="relative inline-flex items-center justify-center flex-shrink-0 rounded-full h-5 w-5 text-[10px]">
+                                            <img class="rounded-full h-5 w-5 text-[10px]"
+                                                :src="userData?.avatar ? '/storage/' + userData.avatar : 'https://cdn-icons-png.flaticon.com/512/17246/17246491.png'">
+                                        </span>
+                                        <span class="truncate">{{ userData?.name }}</span>
+                                    </button>
+                                </div>
+                                <div class="p-1" role="none">
+                                    <button @click.prevent="openProfile"
+                                        class="group flex items-center gap-1.5 w-full px-1.5 py-1.5 text-sm rounded-md text-gray-700 dark:text-gray-200">
+                                        <span
+                                            class="iconify i-heroicons:identification flex-shrink-0 w-5 h-5 text-gray-400 dark:text-gray-500"
+                                            aria-hidden="true"></span>
+                                        <span class="truncate">Conta</span>
+                                        <span class="hidden md:inline-flex flex-shrink-0 gap-0.5 ms-auto">
+                                            <kbd
+                                                class="inline-flex items-center justify-center text-gray-900 dark:text-white h-5 min-w-[20px] text-[11px] px-1 rounded font-medium font-sans bg-gray-100 dark:bg-gray-800 ring-1 ring-gray-300 dark:ring-gray-700 ring-inset">C</kbd>
+                                        </span>
+                                    </button>
+                                    <button @click.prevent="openWithdrawModal"
+                                        class="group flex items-center gap-1.5 w-full px-1.5 py-1.5 text-sm rounded-md text-gray-700 dark:text-gray-200">
+                                        <span
+                                            class="iconify i-heroicons:banknotes flex-shrink-0 w-5 h-5 text-gray-400 dark:text-gray-500"
+                                            aria-hidden="true"></span>
+                                        <span class="truncate">Sacar</span>
+                                        <span class="hidden md:inline-flex flex-shrink-0 gap-0.5 ms-auto">
+                                            <kbd
+                                                class="inline-flex items-center justify-center text-gray-900 dark:text-white h-5 min-w-[20px] text-[11px] px-1 rounded font-medium font-sans bg-gray-100 dark:bg-gray-800 ring-1 ring-gray-300 dark:ring-gray-700 ring-inset">W</kbd>
+                                        </span>
+                                    </button>
+                                    <button @click.prevent="openProfile"
+                                        class="group flex items-center gap-1.5 w-full px-1.5 py-1.5 text-sm rounded-md text-gray-700 dark:text-gray-200">
+                                        <span
+                                            class="iconify i-heroicons:squares-2x2 flex-shrink-0 w-5 h-5 text-gray-400 dark:text-gray-500"
+                                            aria-hidden="true"></span>
+                                        <span class="truncate">Histórico de Jogos</span>
+                                        <span class="hidden md:inline-flex flex-shrink-0 gap-0.5 ms-auto">
+                                            <kbd
+                                                class="inline-flex items-center justify-center text-gray-900 dark:text-white h-5 min-w-[20px] text-[11px] px-1 rounded font-medium font-sans bg-gray-100 dark:bg-gray-800 ring-1 ring-gray-300 dark:ring-gray-700 ring-inset">H</kbd>
+                                        </span>
+                                    </button>
+                                    <button @click.prevent="openProfile"
+                                        class="group flex items-center gap-1.5 w-full px-1.5 py-1.5 text-sm rounded-md text-gray-700 dark:text-gray-200">
+                                        <span
+                                            class="iconify i-heroicons:document-duplicate flex-shrink-0 w-5 h-5 text-gray-400 dark:text-gray-500"
+                                            aria-hidden="true"></span>
+                                        <span class="truncate">Transações</span>
+                                        <span class="hidden md:inline-flex flex-shrink-0 gap-0.5 ms-auto">
+                                            <kbd
+                                                class="inline-flex items-center justify-center text-gray-900 dark:text-white h-5 min-w-[20px] text-[11px] px-1 rounded font-medium font-sans bg-gray-100 dark:bg-gray-800 ring-1 ring-gray-300 dark:ring-gray-700 ring-inset">T</kbd>
+                                        </span>
+                                    </button>
+                                </div>
+                                <div class="p-1" role="none">
+                                    <button @click.prevent="openProfile"
+                                        class="group flex items-center gap-1.5 w-full px-1.5 py-1.5 text-sm rounded-md text-gray-700 dark:text-gray-200">
+                                        <span
+                                            class="iconify i-heroicons:shield-check flex-shrink-0 w-5 h-5 text-gray-400 dark:text-gray-500"
+                                            aria-hidden="true"></span>
+                                        <span class="truncate">Segurança</span>
+                                    </button>
+                                </div>
+                                <div class="p-1" role="none">
+                                    <button @click.prevent="logoutAccount" href="#"
+                                        class="group flex items-center gap-1.5 w-full px-1.5 py-1.5 text-sm rounded-md text-gray-700 dark:text-gray-200">
+                                        <span
+                                            class="iconify i-heroicons:trash-20-solid flex-shrink-0 w-5 h-5 text-gray-400 dark:text-gray-500"
+                                            aria-hidden="true"></span>
+                                        <span class="truncate">Sair</span>
+                                        <span class="hidden md:inline-flex flex-shrink-0 gap-0.5 ms-auto">
+                                            <kbd
+                                                class="inline-flex items-center justify-center text-gray-900 dark:text-white h-5 min-w-[20px] text-[11px] px-1 rounded font-medium font-sans bg-gray-100 dark:bg-gray-800 ring-1 ring-gray-300 dark:ring-gray-700 ring-inset">⌘</kbd>
+                                            <kbd
+                                                class="inline-flex items-center justify-center text-gray-900 dark:text-white h-5 min-w-[20px] text-[11px] px-1 rounded font-medium font-sans bg-gray-100 dark:bg-gray-800 ring-1 ring-gray-300 dark:ring-gray-700 ring-inset">S</kbd>
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <transition name="fade">
+            <div v-if="showSearchMenu" class="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center ">
+                <div @click="toggleSearch" class="absolute inset-0 carousel_banners opacity-50 cursor-pointer"></div>
+
+                <!-- Start searchbar action -->
+                <div class="search-menu p-4 sm:ml-64">
+
+                    <div class="mb-5 w-full">
+                        <div class="md:w-4/6 2xl:w-4/6 mx-auto">
+                            <div class="flex flex-col">
+                                <div class="relative w-full">
+                                    <input type="search" v-model.lazy="searchTerm"
+                                        class="block dark:focus:border-green-500 p-2.5 w-full z-20 text-sm text-gray-900 input-color-primary rounded-e-lg border-none focus:outline-none dark:border-s-gray-800  dark:border-gray-800 dark:placeholder-gray-400 dark:text-white "
+                                        placeholder="Nome do jogo | Provedor" required>
+
+                                    <button v-if="searchTerm.length > 0" @click.prevent="clearData" type="button"
+                                        class="absolute top-0 end-0 h-full p-2.5 text-sm font-medium text-white rounded-e-lg dark:bg-[#1C1E22] ">
+                                        <span class="">Recusar</span>
+                                    </button>
+                                </div>
+                                <div class="text-center mt-4">
+                                    <p>A pesquisa requer pelo menos 3 caracteres</p>
+                                </div>
+                            </div>
+
+                            <div v-if="!isLoadingSearch" class="mt-8 grid grid-cols-3 md:grid-cols-6 gap-4 py-5">
+                                <CassinoGameCard v-if="games" v-for="(game, index) in games?.data" :index="index"
+                                    :title="game.game_name" :cover="game.cover" :gamecode="game.game_code"
+                                    :type="game.distribution" :game="game" />
+                            </div>
+                            <div v-else
+                                class="relative items-center block max-w-sm p-6 bg-white border border-gray-100 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-800 dark:hover:bg-gray-700">
+                                <h5
+                                    class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white opacity-20">
+                                    Noteworthy technology acquisitions 2021</h5>
+                                <p class="font-normal text-gray-700 dark:text-gray-400 opacity-20">Here are the biggest
+                                    enterprise technology acquisitions of 2021 so far, in reverse chronological order.
+                                </p>
+                                <div role="status" class="absolute -translate-x-1/2 -translate-y-1/2 top-2/4 left-1/2">
+                                    <svg aria-hidden="true"
+                                        class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                                        viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                            fill="currentColor" />
+                                        <path
+                                            d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                            fill="currentFill" />
+                                    </svg>
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End searchbar action -->
+
+
+            </div>
+        </transition>
+
+    </nav>
+
+    <div id="modalElAuth" tabindex="-1" aria-hidden="true"
+        class="fixed top-0 left-0 right-0 z-[9999] hidden w-full overflow-x-hidden overflow-y-auto md:inset-0 h-screen md:h-[calc(100%-1rem)] max-h-full bg-black/70">
+        <div id="headlessui-dialog-panel-v-0-6" data-headlessui-state="open"
+            class="relative text-left rtl:text-right flex flex-col !bg-[#0b0d0b] shadow-xl w-full sm:max-w-lg rounded-lg sm:my-8 modal-slide-up">
+            <div class="rounded-lg shadow !bg-[#0b0d0b]">
+                <div class="px-4 py-[10px] pb-[0px] sm:px-6">
+                    <div class="hidden items-center justify-end  sm:flex">
+                        <button @click="closeAuthModal" type="button"
+                            class="h-10 w-10 flex items-center justify-center bg-gray-700/20 text-white hover:bg-gray-700/40 transition-colors">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                    <div class="flex items-center justify-center  sm:hidden mt-[6px] mb-[8px]">
+                        <div class="w-[100px] h-[8px] rounded-[40px] bg-[#262626]"></div>
+                    </div>
+                    <div class="w-full flex items-center justify-center mb-3">
+                        <div class="w-full flex items-center justify-center mb-[0px]">
+                            <h1 class="text-[20px]">Bem vindo de volta!</h1>
+                        </div>
+                    </div>
+                    <div class="text-center text-white/40 text-sm">
+                        <p>Conecte-se para acompanhar seus prêmios,<br>depósitos e muito mais.</p>
+                    </div>
+                </div>
+                <div class="px-4 py-5 sm:p-6">
+                    <form @submit.prevent="loginSubmit" method="post" action="" class="space-y-5 p-[0px] pt-[0px]">
+                        <div class="block">
+                            <label for="inputEmail" class="text-slate-300 text-sm mb-3">E-mail</label>
+                            <div class="relative">
+                                <input id="inputEmail" type="email" autocomplete="email" v-model="loginForm.email"
+                                    name="email" placeholder="example@site.com"
+                                    class="w-full py-3 h-[36px] bg-[#121312] rounded-[8px] pl-[34px] border border-[#1c1c1c] focus:border-green-500 focus:ring-1 focus:ring-green-500 transition text-sm"
+                                    required>
+                                <div class="flex items-center absolute left-0 top-0 pl-[12px] h-[36px]">
+                                    <i class="fa-solid fa-envelope text-[#636463] text-[14px]"></i>
+                                </div>
+                            </div>
+                            <!---->
+                        </div>
+                        <div class="block">
+                            <label for="inputPassword" class="text-[#fff] text-sm mb-3">Digite sua senha</label>
+                            <div class="relative">
+                                <input id="inputPassword" type="password" v-model="loginForm.password"
+                                    autocomplete="current-password" placeholder="Insira sua senha..."
+                                    class="w-full py-3 h-[36px] bg-[#121312] rounded-[8px] pl-[34px] border border-[#1c1c1c] focus:border-green-500 focus:ring-1 focus:ring-green-500 transition text-sm">
+                                <div class="flex items-center absolute left-0 top-0 pl-[12px] h-[36px]">
+                                    <i class="fa-solid fa-lock text-[#636463] text-[14px]"></i>
+                                </div>
+                                <button type="button"
+                                    class="absolute right-0 top-0 p-3 text-green-500 text-[13px]"><span>Mostrar</span></button>
+                            </div>
+                            <!---->
+                        </div>
+                        <div class="py-2">
+                            <button type="submit"
+                                class="py-3 w-full uppercase text-[#0a0d0b] font-medium button-primary hover:text-green-500 rounded-lg transition duration-300 flex items-center justify-center gap-2">
+                                <!----> Entrar
+                            </button>
+                        </div>
+                        <!---->
+                        <div class="flex items-center mt-[10px]">
+                            <hr class="w-full border-gray-600">
+                            <p class="px-4 text-white">OU</p>
+                            <hr class="w-full border-gray-600">
+                        </div>
+                        <div class="text-white/70 text-[15px] flex items-center justify-center gap-[4px] text-center w-full !mt-[10px]">
+                            <p class="flex flex-col items-center justify-center gap-[4px]"> Ainda não tem uma conta? <a
+                                    @click="registerToggle" class="text-primary">Registrar</a></p>
+                        </div>
+                    </form>
+                </div>
+                <!---->
+            </div>
+        </div>
+    </div>
+
+    <div id="modalElRegister" tabindex="-1" aria-hidden="true"
+        class="fixed top-0 left-0 right-0 z-[9999] hidden w-full overflow-x-hidden overflow-y-auto md:inset-0 h-screen md:h-[calc(100%-1rem)] max-h-full bg-black/70">
+        <div id="headlessui-dialog-panel-v-0-6" data-headlessui-state="open"
+            class="relative text-left rtl:text-right flex flex-col !bg-[#0a0c0a] shadow-xl w-full sm:max-w-lg rounded-lg sm:my-8 modal-slide-up">
+            <div class="rounded-lg shadow !bg-[#0a0c0a]">
+                <div class="px-4 py-[10px] pb-[0px] sm:px-6">
+                    <div class="hidden items-center justify-end  sm:flex">
+                        <button @click="closeRegisterModal" type="button"
+                            class="h-10 w-10 flex items-center justify-center bg-gray-700/20 text-white hover:bg-gray-700/40 transition-colors">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                    <div class="flex items-center justify-center  sm:hidden mt-[6px] mb-[8px]">
+                        <div class="w-[100px] h-[8px] rounded-[40px] bg-[#262626]"></div>
+                    </div>
+                    <div class="w-full flex items-center justify-center mb-[0px]">
+                        <div class="flex items-center gap-5 text-white">
+                            <h1 class="text-[20px]">Crie sua conta!</h1>
+                        </div>
+                    </div>
+                    <div class="text-center text-white/40 text-sm">
+                        <p>Começe a concorrer a prêmios hoje!</p>
+                    </div>
+                </div>
+                <div class="px-4 py-5 sm:p-6 pt-[0px]">
+                    <form @submit.prevent="registerSubmit" method="post" action="" class="space-y-5 p-[0px] pt-[0px]">
+                        <div class="block !mt-[18px]">
+                            <label for="inputName" class="text-slate-300 text-sm mb-3">Nome Completo</label>
+                            <div class="relative">
+                                <input id="inputName" v-model="registerForm.name" type="text" placeholder="Digite seu nome completo"
+                                    class="w-full py-3 h-[36px] bg-[#121312] rounded-[8px] pl-[34px] border border-[#1c1c1c] focus:border-green-500 focus:ring-1 focus:ring-green-500 transition text-sm">
+                                <div class="flex items-center absolute left-0 top-0 pl-[12px] h-[36px]">
+                                    <i class="fa-solid fa-city text-[#636463] text-[14px]"></i>
+                                </div>
+                            </div>
+                            <!---->
+                        </div>
+                        <div class="block !mt-[18px]">
+                            <label for="inputEmail" class="text-[#fff] text-sm mb-3">E-mail</label>
+                            <div class="relative">
+                                <input id="inputEmail" v-model="registerForm.email" type="email" placeholder="example@site.com"
+                                    class="w-full py-3 h-[36px] bg-[#121312] rounded-[8px] pl-[34px] border border-[#1c1c1c] focus:border-green-500 focus:ring-1 focus:ring-green-500 transition text-sm">
+                                <div class="flex items-center absolute left-0 top-0 pl-[12px] h-[36px]">
+                                    <i class="fa-solid fa-envelope text-[#636463] text-[14px]"></i>
+                                </div>
+                            </div>
+                            <!---->
+                        </div>
+                        <div class="block !mt-[18px]">
+                            <label for="inputPhone" class="text-[#fff] text-sm mb-3">Telefone</label>
+                            <div class="relative">
+                                <input id="inputPhone" type="text" placeholder="(00) 0000-0000"
+                                    class="w-full py-3 h-[36px] bg-[#121312] rounded-[8px] pl-[34px] border border-[#1c1c1c] focus:border-green-500 focus:ring-1 focus:ring-green-500 transition text-sm">
+                                <div class="flex items-center absolute left-0 top-0 pl-[12px] h-[36px]">
+                                    <i class="fa-solid fa-phone text-[#636463] text-[14px]"></i>
+                                </div>
+                            </div>
+                            <!---->
+                        </div>
+                        <div class="block !mt-[18px]">
+                            <label for="inputPassword" class="text-[#fff] text-sm mb-3">Digite sua senha</label>
+                            <div class="relative">
+                                <input id="inputPassword" v-model="registerForm.password" type="password" placeholder="Insira sua senha..."
+                                    class="w-full py-3 h-[36px] bg-[#121312] rounded-[8px] pl-[34px] border border-[#1c1c1c] focus:border-green-500 focus:ring-1 focus:ring-green-500 transition text-sm">
+                                <div class="flex items-center absolute left-0 top-0 pl-[12px] h-[36px]">
+                                    <i class="fa-solid fa-lock text-[#636463] text-[14px]"></i>
+                                </div>
+                                <button type="button"
+                                    class="absolute right-0 top-0 p-3 text-green-500 text-[13px]"><span>Mostrar</span></button>
+                            </div>
+                            <!---->
+                        </div>
+                        <div class="py-2">
+                            <button type="submit"
+                                class="py-3 w-full uppercase text-[#0a0d0b] font-medium button-primary hover:text-green-500 rounded-lg transition duration-300 flex items-center justify-center gap-2">
+                                <!----> Criar Conta
+                            </button>
+                        </div>
+                        <div class="text-white/70 text-[15px] flex items-center justify-center gap-[4px] text-center w-full !mt-[10px]">
+                            <p class="flex flex-col items-center justify-center gap-[4px]"> Já tem uma conta? 
+                                <a @click.prevent="hideRegisterShowLoginToggle" class="text-primary">Entrar</a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+                <!---->
+            </div>
+        </div>
+    </div>
+
+    <div id="modalProfileEl" tabindex="-1" aria-hidden="true"
+        class="fixed top-0 left-0 right-0 z-50 hidden w-full overflow-x-hidden overflow-y-auto md:inset-0 h-screen md:h-[calc(100%-1rem)] max-h-full">
+        <div class="relative w-full max-w-2xl md:max-w-lg max-h-full bg-white dark:bg-gray-900 rounded-lg shadow-lg">
+            <div v-if="!isLoadingProfile" class="flex flex-col">
+
+                <!-- PROFILE HEADER -->
+                <div class="flex justify-between w-full p-4">
+                    <h1 class="text-2xl font-bold">{{ $t('User data') }}</h1>
+                    <button @click.prevent="profileToggle" type="button" class="text-2xl">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <!-- PROFILE BODY -->
+                <div v-if="profileUser != null" class="flex flex-col w-full p-4">
+
+                    <!-- PROFILE INFO -->
+                    <div class="flex items-center self-center justify-between w-full">
+                        <button @click.prevent="like(profileUser.id)" type="button" class="heart">
+                            <i class="fa-solid fa-heart"></i>
+                            <span class="ml-2">{{ profileUser.totalLikes }}</span>
+                        </button>
+                        <div class="text-center flex flex-col justify-center self-center items-center">
+                            <div class="relative">
+                                <img class="w-24 h-246 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500"
+                                    :src="avatarUrl" alt="">
+                                <input ref="fileInput" type="file" style="display: none" @change="handleFileChange">
+                                <button @click="openFileInput" type="button" class="absolute bottom-0 right-0 text-3xl">
+                                    <i class="fa-duotone fa-image"></i>
+                                </button>
+                            </div>
+                            <div class="relative">
+                                <input @change.prevent="updateName" v-model="profileName" type="text"
+                                    :readonly="!readonly"
+                                    class="mt-4 appearance-none border border-gray-300 rounded-md p-2 bg-transparent border-none text-center"
+                                    :placeholder="profileName">
+                            </div>
+                        </div>
+                        <div class="">
+                            <button @click.prevent="readonly = !readonly" type="button"
+                                class="bg-gray-200 hover:bg-gray-400 dark:bg-gray-600 hover:dark:bg-gray-700 w-10 h-10  rounded">
+                                <i v-if="!readonly" class="fa-sharp fa-light fa-pen"></i>
+                                <i v-if="readonly" class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mt-3 shadow flex flex-col bg-gray-100 dark:bg-gray-900 rounded-lg">
+                        <div class="flex justify-between px-4 pt-4">
+                            <h1><span class="mr-2"><i class="fa-solid fa-chart-mixed"></i></span> {{ $t('Statistics') }}
+                            </h1>
+                        </div>
+                        <div class="p-4">
+                            <div class="grid grid-cols-3 gap-4">
+                                <div class="bg-gray-200 dark:bg-gray-700 text-center p-4">
+                                    <p class="text-[12px]">{{ $t('Total winnings') }}</p>
+                                    <p class="text-2xl font-bold">
+                                        {{ totalEarnings }}
+                                    </p>
+                                </div>
+                                <div class="bg-gray-200 dark:bg-gray-700 text-center p-4">
+                                    <p class="text-[12px]">{{ $t('Total bets') }}</p>
+                                    <p class="text-2xl font-bold">{{ totalBets }}</p>
+                                </div>
+                                <div class="bg-gray-200 dark:bg-gray-700 text-center p-4">
+                                    <p class="text-[12px]">{{ $t('Total bet') }}</p>
+                                    <p class="text-2xl font-bold">{{ sumBets }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="py-3 text-center">
+                        <p>ingressou em {{ profileUser.dateHumanReadable }}</p>
+                    </div>
+
+                </div>
+            </div>
+            <div v-if="isLoadingProfile" class="flex flex-col w-full h-full">
+                <div role="status" class="absolute -translate-x-1/2 -translate-y-1/2 top-2/4 left-1/2">
+                    <svg aria-hidden="true" class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                        viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                            fill="currentColor" />
+                        <path
+                            d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                            fill="currentFill" />
+                    </svg>
+                    <span class="sr-only">{{ $t('Loading') }}...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+import { RouterLink, useRoute } from "vue-router";
+import { sidebarStore } from "@/Stores/SideBarStore.js";
+import { Modal } from 'flowbite';
+import { useAuthStore } from "@/Stores/Auth.js";
+import { useToast } from "vue-toastification";
+import { useRouter } from 'vue-router';
+
+import DropdownDarkLight from "@/Components/UI/DropdownDarkLight.vue";
+import LanguageSelector from "@/Components/UI/LanguageSelector.vue";
+import WalletBalance from "@/Components/UI/WalletBalance.vue";
+import HttpApi from "@/Services/HttpApi.js";
+import MakeDeposit from "@/Components/UI/MakeDeposit.vue";
+import MakeWithdraw from "@/Components/UI/MakeWithdraw.vue";
+import { useSettingStore } from "@/Stores/SettingStore.js";
+import { searchGameStore } from "@/Stores/SearchGameStore.js";
+import CassinoGameCard from "@/Pages/Cassino/Components/CassinoGameCard.vue";
+
+export default {
+    props: ['simple'],
+    components: { CassinoGameCard, MakeDeposit, MakeWithdraw, WalletBalance, LanguageSelector, DropdownDarkLight, RouterLink },
+    data() {
+        return {
+            isLoadingLogin: false,
+            isLoadingRegister: false,
+            isReferral: false,
+            modalAuth: null,
+            modalRegister: null,
+            modalProfile: null,
+            typeInputPassword: 'password',
+            readonly: false,
+            profileUser: null,
+            loginForm: {
+                email: '',
+                password: '',
+            },
+            registerForm: {
+                name: '',
+                email: '',
+                password: '',
+                reference_code: '',
+                term_a: false,
+                agreement: false,
+            },
+            avatarUrl: '/assets/images/profile.jpg',
+            isLoadingProfile: false,
+            profileName: '',
+            sumBets: 0,
+            totalBets: 0,
+            totalEarnings: 0,
+            showSearchMenu: false,
+            games: null,
+            searchTerm: '',
+            isLoadingSearch: true,
+        }
+    },
+    setup() {
+        const router = useRouter();
+
+        return {
+            router,
+        };
+    },
+    computed: {
+        searchGameDataStore() {
+            return searchGameStore();
+        },
+        searchGameMenu() {
+            const search = searchGameStore();
+            return search.getSearchGameStatus;
+        },
+        sidebarMenuStore() {
+            return sidebarStore();
+        },
+        isAuthenticated() {
+            const authStore = useAuthStore();
+            return authStore.isAuth;
+        },
+        userData() {
+            const authStore = useAuthStore();
+            return authStore.user;
+        },
+        setting() {
+            const authStore = useSettingStore();
+            return authStore.setting;
+        }
+    },
+    unmounted() {
+
+    },
+    mounted() {
+        /*
+        * $targetEl: required
+        * options: optional
+        */
+        this.modalProfile = new Modal(document.getElementById('modalProfileEl'), {
+            placement: 'center',
+            backdrop: 'dynamic',
+            backdropClasses: 'bg-gray-700 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40',
+            closable: false,
+            onHide: () => {
+
+            },
+            onShow: () => {
+
+            },
+            onToggle: () => {
+
+            }
+        });
+
+        /*
+        * $targetEl: required
+        * options: optional
+        */
+        this.modalAuth = new Modal(document.getElementById('modalElAuth'), {
+            placement: 'center',
+            backdrop: 'dynamic',
+            backdropClasses: 'bg-gray-900/80 fixed inset-0 z-[9998]',
+            closable: true,
+            onHide: () => {
+                // Limpar animações mobile
+                const modal = document.getElementById('modalElAuth');
+                if (modal) {
+                    modal.classList.add('hidden');
+                }
+                this.removeAllBackdrops();
+            },
+            onShow: () => {
+                // Preparar modal para mobile
+                const modal = document.getElementById('modalElAuth');
+                if (modal && window.innerWidth <= 640) {
+                    modal.style.alignItems = 'flex-end';
+                }
+            },
+            onToggle: () => {
+
+            }
+        });
+
+        /*
+       * $targetEl: required
+       * options: optional
+       */
+        this.modalRegister = new Modal(document.getElementById('modalElRegister'), {
+            placement: 'center',
+            backdrop: 'dynamic',
+            backdropClasses: 'bg-gray-900/80 fixed inset-0 z-[9998]',
+            closable: true,
+            onHide: () => {
+                // Limpar animações mobile
+                const modal = document.getElementById('modalElRegister');
+                if (modal) {
+                    modal.classList.add('hidden');
+                }
+                // Remove todos os backdrops residuais quando o modal for fechado
+                setTimeout(() => {
+                    const backdrops = document.querySelectorAll('[data-modal-backdrop], .fixed.inset-0, [class*="bg-gray-900/80"], [class*="bg-gray-700"], [class*="backdrop"]');
+                    backdrops.forEach(backdrop => {
+                        // Verifica se é realmente um backdrop modal e não outro elemento importante
+                        if (backdrop.style.zIndex >= 9998 || backdrop.classList.contains('fixed')) {
+                            backdrop.remove();
+                        }
+                    });
+                    
+                    // Remove classes de overflow-hidden do body que podem ter ficado
+                    document.body.classList.remove('overflow-hidden');
+                    document.documentElement.classList.remove('overflow-hidden');
+                }, 100);
+            },
+            onShow: () => {
+                // Preparar modal para mobile
+                const modal = document.getElementById('modalElRegister');
+                if (modal && window.innerWidth <= 640) {
+                    modal.style.alignItems = 'flex-end';
+                }
+            },
+            onToggle: () => {
+
+            }
+        });
+    },
+    methods: {
+        openWithdrawModal: function() {
+            this.$refs.makeWithdrawRef.toggleModal();
+        },
+        openProfile: function () {
+            this.router.push({ name: 'profileWallet' });
+        },
+        toggleSearch: function () {
+            this.searchGameDataStore.setSearchGameToogle();
+        },
+        redirectSocialTo: function () {
+            return '/auth/redirect/google'
+        },
+        like: async function (id) {
+            const _this = this;
+            const _toast = useToast();
+            await HttpApi.post('/profile/like/' + id, {})
+                .then(response => {
+
+                    _this.getProfile();
+                    _toast.success(_this.$t(response.data.message));
+                })
+                .catch(error => {
+                    Object.entries(JSON.parse(error.request.responseText)).forEach(([key, value]) => {
+                        _toast.error(`${value}`);
+                    });
+                });
+        },
+        updateName: async function (event) {
+            const _this = this;
+            _this.isLoadingProfile = true;
+
+            await HttpApi.post('/profile/updateName', { name: _this.profileName })
+                .then(response => {
+                    _this.isLoadingProfile = false;
+                })
+                .catch(error => {
+                    const _this = this;
+                    Object.entries(JSON.parse(error.request.responseText)).forEach(([key, value]) => {
+
+                    });
+                    _this.isLoadingProfile = false;
+                });
+        },
+        togglePassword: function () {
+            if (this.typeInputPassword === 'password') {
+                this.typeInputPassword = 'text';
+            } else {
+                this.typeInputPassword = 'password';
+            }
+        },
+        loginSubmit: function (event) {
+            const _this = this;
+            const _toast = useToast();
+            _this.isLoadingLogin = true;
+            const authStore = useAuthStore();
+
+            HttpApi.post('auth/login', _this.loginForm)
+                .then(async response => {
+                    await new Promise(r => {
+                        setTimeout(() => {
+                            authStore.setToken(response.data.access_token);
+                            authStore.setUser(response.data.user);
+                            authStore.setIsAuth(true);
+
+                            _this.loginForm = {
+                                email: '',
+                                password: '',
+                            }
+
+                            _this.modalAuth.toggle();
+                            _toast.success(_this.$t('You have been authenticated, welcome!'));
+
+                            _this.isLoadingLogin = false;
+                        }, 1000)
+                    });
+                })
+                .catch(error => {
+                    const _this = this;
+                    Object.entries(JSON.parse(error.request.responseText)).forEach(([key, value]) => {
+                        _toast.error(`${value}`);
+                    });
+                    _this.isLoadingLogin = false;
+                });
+        },
+        registerSubmit: async function (event) {
+            const _this = this;
+            const _toast = useToast();
+            _this.isLoadingRegister = true;
+
+            const authStore = useAuthStore();
+            await HttpApi.post('auth/register', _this.registerForm)
+                .then(response => {
+                    if (response.data.access_token !== undefined) {
+                        authStore.setToken(response.data.access_token);
+                        authStore.setUser(response.data.user);
+                        authStore.setIsAuth(true);
+
+                        _this.registerForm = {
+                            name: '',
+                            email: '',
+                            password: '',
+                            password_confirmation: '',
+                            reference_code: '',
+                            term_a: false,
+                            agreement: false,
+                        }
+
+                        insertKwaiPixelLogs("completeRegistration");
+
+                        _this.modalRegister.toggle();
+                        _this.router.push({ name: 'home' });
+                        _toast.success(_this.$t('Your account has been created successfully'));
+                    }
+
+                    _this.isLoadingRegister = false;
+                })
+                .catch(error => {
+                    Object.entries(JSON.parse(error.request.responseText)).forEach(([key, value]) => {
+                        _toast.error(`${value}`);
+                    });
+                    _this.isLoadingRegister = false;
+                });
+        },
+        logoutAccount: function () {
+            const authStore = useAuthStore();
+            const _toast = useToast();
+
+            HttpApi.post('auth/logout', {})
+                .then(response => {
+                    authStore.logout();
+                    this.router.push({ name: 'home' });
+
+                    _toast.success(this.$t('You have been successfully disconnected'));
+                })
+                .catch(error => {
+                    Object.entries(JSON.parse(error.request.responseText)).forEach(([key, value]) => {
+                        console.log(value);
+                        //_toast.error(`${value}`);
+                    });
+                });
+        },
+        hideLoginShowRegisterToggle: function () {
+            this.modalAuth.hide();   
+            this.modalRegister.show(); 
+        },
+        hideRegisterShowLoginToggle: function () {
+            this.modalRegister.hide();
+            this.modalAuth.show();     
+        },
+        toggleMenu: function () {
+            this.sidebarMenuStore.setSidebarToogle();
+        },
+        loginToggle: function () {
+            this.modalAuth.show();
+        },
+        registerToggle: function () {
+            this.modalRegister.show();
+        },
+        closeAuthModal: function () {
+            this.modalAuth.hide();
+            this.removeAllBackdrops();
+        },
+        closeRegisterModal: function () {
+            this.modalRegister.hide();
+            this.removeAllBackdrops();
+        },
+        removeAllBackdrops: function () {
+            // Remove todos os elementos de backdrop que possam ter ficado na página
+            const backdrops = document.querySelectorAll('[data-modal-backdrop], .fixed.inset-0, [class*="bg-gray-900/80"], [class*="bg-gray-700"], [class*="backdrop"]');
+            backdrops.forEach(backdrop => {
+                // Verifica se é realmente um backdrop modal e não outro elemento importante
+                if (backdrop.style.zIndex >= 9998 || backdrop.classList.contains('fixed')) {
+                    backdrop.remove();
+                }
+            });
+            
+            // Remove classes de overflow-hidden do body que podem ter ficado
+            document.body.classList.remove('overflow-hidden');
+            document.documentElement.classList.remove('overflow-hidden');
+        },
+        profileToggle: function () {
+            this.modalProfile.toggle();
+        },
+        openFileInput() {
+            this.$refs.fileInput.click();
+        },
+        async handleFileChange(event) {
+            const file = event.target.files[0];
+            const formData = new FormData();
+            formData.append('avatar', file);
+
+            const reader = new FileReader();
+            reader.onload = () => {
+                this.avatarUrl = reader.result;
+            };
+            reader.readAsDataURL(file);
+
+            await HttpApi.post('/profile/upload-avatar', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            }).then(response => {
+                console.log('Avatar atualizado com sucesso', response.data);
+            })
+                .catch(error => {
+                    console.error('Erro ao atualizar avatar', error);
+                });
+        },
+        getProfile: async function () {
+            const _this = this;
+            _this.isLoadingProfile = true;
+
+            await HttpApi.get('/profile/')
+                .then(response => {
+                    _this.sumBets = response.data.sumBets;
+                    _this.totalBets = response.data.totalBets;
+                    _this.totalEarnings = response.data.totalEarnings;
+
+                    const user = response.data.user;
+
+                    if (user?.avatar != null) {
+                        _this.avatarUrl = '/storage/' + user.avatar;
+                    }
+
+                    _this.profileName = user.name;
+                    _this.profileUser = user;
+                    _this.isLoadingProfile = false;
+                })
+                .catch(error => {
+                    const _this = this;
+                    Object.entries(JSON.parse(error.request.responseText)).forEach(([key, value]) => {
+
+                    });
+                    _this.isLoadingProfile = false;
+                });
+        },
+        getSearch: async function () {
+            const _this = this;
+
+            await HttpApi.get('/search/games?searchTerm=' + this.searchTerm)
+                .then(response => {
+                    _this.games = response.data.games;
+                    _this.isLoadingSearch = false;
+                })
+                .catch(error => {
+                    const _this = this;
+                    Object.entries(JSON.parse(error.request.responseText)).forEach(([key, value]) => {
+
+                    });
+                    _this.isLoadingSearch = false;
+                });
+        },
+        clearData: async function () {
+            this.searchTerm = '';
+            await this.getSearch();
+        }
+    },
+    async created() {
+        if (this.isAuthenticated) {
+
+            await this.getProfile();
+        }
+    },
+    watch: {
+        searchTerm(newValue, oldValue) {
+            this.getSearch();
+        },
+        async searchGameMenu(newValue, oldValue) {
+
+            await this.getSearch();
+            this.showSearchMenu = !this.showSearchMenu;
+        },
+    },
+};
+</script>
+
+<style scoped>
+/* Animação para modais mobile */
+@media (max-width: 640px) {
+    #modalElAuth,
+    #modalElRegister {
+        align-items: flex-end !important;
+    }
+    
+    #modalElAuth .modal-slide-up,
+    #modalElRegister .modal-slide-up {
+        animation: slideUpFadeIn 0.3s ease-out forwards;
+        transform: translateY(100%);
+        opacity: 0;
+        border-radius: 1rem 1rem 0 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+    
+    #modalElAuth:not(.hidden) .modal-slide-up,
+    #modalElRegister:not(.hidden) .modal-slide-up {
+        animation: slideUpFadeIn 0.3s ease-out forwards;
+    }
+    
+    #modalElAuth.hidden .modal-slide-up,
+    #modalElRegister.hidden .modal-slide-up {
+        animation: slideDownFadeOut 0.3s ease-in forwards;
+    }
+}
+
+@keyframes slideUpFadeIn {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideDownFadeOut {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+}
+
+/* Z-index alto para modais */
+#modalElAuth,
+#modalElRegister {
+    z-index: 9999 !important;
+}
+
+/* Backdrop com z-index alto */
+#modalElAuth ~ .fixed.inset-0,
+#modalElRegister ~ .fixed.inset-0 {
+    z-index: 9998 !important;
+}
+</style>

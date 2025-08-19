@@ -1,0 +1,263 @@
+/* Modern Login Page Styles for Filament */
+
+/* Root variables for easy theme customization */
+:root {
+    --login-primary: #667eea;
+    --login-secondary: #764ba2;
+    --login-accent: #8b5cf6;
+    --login-bg-start: #667eea;
+    --login-bg-end: #764ba2;
+    --login-card-bg: rgba(255, 255, 255, 0.95);
+    --login-text-primary: #1f2937;
+    --login-text-secondary: #6b7280;
+    --login-border: rgba(102, 126, 234, 0.2);
+    --login-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Enhanced login page background with animated elements */
+.fi-simple-layout {
+    background: linear-gradient(135deg, var(--login-bg-start) 0%, var(--login-bg-end) 100%) !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+/* Floating geometric shapes */
+.fi-simple-layout::after {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    top: -150px;
+    right: -150px;
+    animation: pulse 4s ease-in-out infinite;
+    z-index: 1;
+}
+
+.fi-simple-layout::before {
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+    bottom: -100px;
+    left: -100px;
+    animation: pulse 6s ease-in-out infinite reverse;
+    z-index: 1;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 0.5;
+    }
+    50% {
+        transform: scale(1.1) rotate(180deg);
+        opacity: 0.8;
+    }
+}
+
+/* Enhanced login card with glassmorphism effect - Reduced size */
+.fi-simple-layout .fi-simple-card {
+    background: var(--login-card-bg) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 20px !important;
+    box-shadow: var(--login-shadow) !important;
+    position: relative !important;
+    z-index: 10 !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    max-width: 380px !important;
+    padding: 2rem !important;
+}
+
+/* Subtle glow effect on card hover - Reduced */
+.fi-simple-layout .fi-simple-card:hover {
+    box-shadow: 
+        var(--login-shadow),
+        0 0 30px rgba(102, 126, 234, 0.15) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* Enhanced form inputs with modern styling - Fixed */
+.fi-simple-layout .fi-field-wrapper {
+    position: relative !important;
+    margin-bottom: 1rem !important;
+}
+
+.fi-simple-layout .fi-input-wrapper {
+    position: relative !important;
+    display: block !important;
+}
+
+.fi-simple-layout .fi-input {
+    background: rgba(255, 255, 255, 0.9) !important;
+    border: 1px solid var(--login-border) !important;
+    background-clip: padding-box !important;
+    position: relative !important;
+    box-sizing: border-box !important;
+    z-index: 1 !important;
+}
+
+/* Remove conflicting pseudo-elements */
+.fi-simple-layout .fi-input-wrapper::before {
+    display: none !important;
+}
+
+.fi-simple-layout .fi-input:focus {
+    border-color: var(--login-primary) !important;
+    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1) !important;
+    z-index: 2 !important;
+}
+
+/* Enhanced button with ripple effect */
+.fi-simple-layout .fi-btn-primary {
+    background: linear-gradient(135deg, var(--login-primary) 0%, var(--login-secondary) 100%) !important;
+    position: relative !important;
+    overflow: hidden !important;
+    transform-style: preserve-3d !important;
+}
+
+.fi-simple-layout .fi-btn-primary::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.fi-simple-layout .fi-btn-primary:active::after {
+    width: 300px;
+    height: 300px;
+}
+
+/* Loading state for button */
+.fi-simple-layout .fi-btn-primary[disabled] {
+    background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%) !important;
+    cursor: not-allowed !important;
+}
+
+/* Enhanced focus styles for accessibility */
+.fi-simple-layout .fi-input:focus,
+.fi-simple-layout .fi-btn-primary:focus {
+    outline: 2px solid var(--login-accent) !important;
+    outline-offset: 2px !important;
+}
+
+/* Improved error state styling */
+.fi-simple-layout .fi-input[aria-invalid="true"] {
+    border-color: #ef4444 !important;
+    background: rgba(239, 68, 68, 0.05) !important;
+}
+
+/* Custom checkbox styling */
+.fi-simple-layout input[type="checkbox"] {
+    appearance: none !important;
+    width: 20px !important;
+    height: 20px !important;
+    border: 2px solid var(--login-border) !important;
+    border-radius: 6px !important;
+    background: rgba(255, 255, 255, 0.8) !important;
+    position: relative !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+}
+
+.fi-simple-layout input[type="checkbox"]:checked {
+    background: linear-gradient(135deg, var(--login-primary), var(--login-secondary)) !important;
+    border-color: var(--login-primary) !important;
+}
+
+.fi-simple-layout input[type="checkbox"]:checked::before {
+    content: '✓' !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    color: white !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+}
+
+/* Mobile-first responsive enhancements */
+@media (max-width: 480px) {
+    .fi-simple-layout .fi-simple-card {
+        margin: 1rem !important;
+        padding: 1.5rem !important;
+        border-radius: 20px !important;
+    }
+    
+    .fi-simple-layout .fi-simple-header h1 {
+        font-size: 1.5rem !important;
+    }
+    
+    .fi-simple-layout .fi-input,
+    .fi-simple-layout .fi-btn-primary {
+        padding: 0.875rem 1rem !important;
+        font-size: 0.95rem !important;
+    }
+}
+
+/* Tablet adjustments */
+@media (min-width: 481px) and (max-width: 768px) {
+    .fi-simple-layout .fi-simple-card {
+        max-width: 400px !important;
+        padding: 2.5rem !important;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .fi-simple-layout .fi-simple-card {
+        border: 2px solid #000 !important;
+        background: #fff !important;
+    }
+    
+    .fi-simple-layout .fi-input {
+        border: 2px solid #000 !important;
+        background: #fff !important;
+    }
+    
+    .fi-simple-layout .fi-btn-primary {
+        background: #000 !important;
+        color: #fff !important;
+        border: 2px solid #000 !important;
+    }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .fi-simple-layout::before,
+    .fi-simple-layout::after,
+    .fi-simple-layout .fi-simple-card,
+    .fi-simple-layout .fi-input,
+    .fi-simple-layout .fi-btn-primary {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* Print styles */
+@media print {
+    .fi-simple-layout {
+        background: white !important;
+    }
+    
+    .fi-simple-layout::before,
+    .fi-simple-layout::after {
+        display: none !important;
+    }
+    
+    .fi-simple-layout .fi-simple-card {
+        box-shadow: none !important;
+        border: 1px solid #000 !important;
+    }
+}

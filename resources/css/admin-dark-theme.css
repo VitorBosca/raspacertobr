@@ -1,0 +1,173 @@
+/* Custom Dark Theme for Filament Admin Panel */
+
+/* Sidebar customization */
+.fi-sidebar {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%) !important;
+    border-right: 1px solid rgba(139, 92, 246, 0.1) !important;
+}
+
+/* Navigation items */
+.fi-sidebar-nav-item {
+    transition: all 0.3s ease !important;
+}
+
+.fi-sidebar-nav-item:hover {
+    background: rgba(139, 92, 246, 0.1) !important;
+    border-radius: 8px !important;
+    transform: translateX(4px) !important;
+}
+
+/* Navigation group labels */
+.fi-sidebar-nav-group-label {
+    color: #a855f7 !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    font-size: 0.75rem !important;
+}
+
+/* Navigation item labels */
+.fi-sidebar-nav-item-label {
+    color: #e2e8f0 !important;
+    font-weight: 500 !important;
+}
+
+/* Active navigation item */
+.fi-sidebar-nav-item[aria-current="page"] {
+    background: linear-gradient(90deg, rgba(139, 92, 246, 0.2), rgba(139, 92, 246, 0.1)) !important;
+    border-right: 3px solid #a855f7 !important;
+}
+
+.fi-sidebar-nav-item[aria-current="page"] .fi-sidebar-nav-item-label {
+    color: #a855f7 !important;
+    font-weight: 600 !important;
+}
+
+/* Icons customization */
+.fi-sidebar-nav-item-icon {
+    color: #94a3b8 !important;
+    transition: all 0.3s ease !important;
+}
+
+.fi-sidebar-nav-item:hover .fi-sidebar-nav-item-icon {
+    color: #a855f7 !important;
+    transform: scale(1.1) !important;
+}
+
+.fi-sidebar-nav-item[aria-current="page"] .fi-sidebar-nav-item-icon {
+    color: #a855f7 !important;
+}
+
+/* Group icons */
+.fi-sidebar-nav-group-icon {
+    color: #a855f7 !important;
+}
+
+/* Main content area */
+.fi-main {
+    background: #0f172a !important;
+}
+
+/* Header */
+.fi-topbar {
+    background: linear-gradient(90deg, #1e293b 0%, #334155 100%) !important;
+    border-bottom: 1px solid rgba(139, 92, 246, 0.1) !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+/* Cards and panels */
+.fi-card {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%) !important;
+    border: 1px solid rgba(139, 92, 246, 0.1) !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Buttons */
+.fi-btn-primary {
+    background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%) !important;
+    border: none !important;
+    box-shadow: 0 4px 14px 0 rgba(139, 92, 246, 0.4) !important;
+    transition: all 0.3s ease !important;
+}
+
+.fi-btn-primary:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px 0 rgba(139, 92, 246, 0.6) !important;
+}
+
+/* Tables */
+.fi-ta-table {
+    background: #1e293b !important;
+}
+
+.fi-ta-row:hover {
+    background: rgba(139, 92, 246, 0.05) !important;
+}
+
+/* Form fields */
+.fi-input, .fi-select-input, .fi-textarea {
+    background: #334155 !important;
+    border: 1px solid rgba(139, 92, 246, 0.2) !important;
+    color: #e2e8f0 !important;
+}
+
+.fi-input:focus, .fi-select-input:focus, .fi-textarea:focus {
+    border-color: #a855f7 !important;
+    box-shadow: 0 0 0 1px #a855f7 !important;
+}
+
+/* Sidebar toggle button */
+.fi-sidebar-toggle-btn {
+    color: #a855f7 !important;
+}
+
+/* Scrollbar customization */
+.fi-sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.fi-sidebar::-webkit-scrollbar-track {
+    background: rgba(139, 92, 246, 0.1);
+    border-radius: 3px;
+}
+
+.fi-sidebar::-webkit-scrollbar-thumb {
+    background: #a855f7;
+    border-radius: 3px;
+}
+
+.fi-sidebar::-webkit-scrollbar-thumb:hover {
+    background: #8b5cf6;
+}
+
+/* Logo customization */
+.fi-logo {
+    filter: brightness(1.2) contrast(1.1) !important;
+}
+
+/* Navigation badge */
+.fi-sidebar-nav-item-badge {
+    background: linear-gradient(135deg, #a855f7, #8b5cf6) !important;
+    color: white !important;
+    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.4) !important;
+}
+
+/* Dropdown menus */
+.fi-dropdown-panel {
+    background: #1e293b !important;
+    border: 1px solid rgba(139, 92, 246, 0.2) !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Stats widgets */
+.fi-wi-stats-card {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%) !important;
+    border: 1px solid rgba(139, 92, 246, 0.1) !important;
+}
+
+.fi-wi-stats-card-value {
+    background: linear-gradient(135deg, #a855f7, #8b5cf6) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+}
